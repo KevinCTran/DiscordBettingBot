@@ -1,9 +1,11 @@
 const Discord = require('discord.js');
+const { overUnderChannel } = require('../config.json');
 
 module.exports = {
 	name: 'o/u',
     description: 'Over/Under Bet',
     args: true,
+    maincommand: true,
     usage: '<Player/Team> <Number> <Cat>',
 	execute(message, args, ouBets, vsBets) {
         if (isNaN(Number(args[1]))) {
@@ -17,7 +19,8 @@ module.exports = {
             return message.channel.send("Bet already exists. Pay attention yea?")
         }
         ouBets.set(betString, {"OVER" : new Set(), "UNDER" : new Set()});
-        //message.react('⭐');
+
+        message.client.channels.cache.get(overUnderChannel).send(`\`${betString}\``);
 
         const Embed = new Discord.MessageEmbed()
             .setColor('#552583')

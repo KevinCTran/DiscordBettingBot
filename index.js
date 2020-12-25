@@ -1,7 +1,6 @@
 const fs = require('fs');
 const Discord = require('discord.js');
-//const { prefix, token } = require('./config.json');
-const { Console } = require('console');
+require("dotenv").config();
 
 const client = new Discord.Client({intents: Discord.Intents.ALL});
 client.commands = new Discord.Collection();
@@ -14,36 +13,38 @@ for (const file of commandFiles) {
 }
 
 client.once('ready', () => {
-    console.log('READY');
+    console.log('Bot is ready!');
 });
 
-var prefix = '!';
 var ouBets = new Map();
 var vsBets = new Map();
 
 client.on('message', message => {
-    // Default reactions if message is by bot and is o/u or vs
     if (!message.content.startsWith('\`')) return;
-    var msgSplit = message.content.slice(1).trim().split(' ');
-    if (message.author.id === '791571908511531010') {
-        if (msgSplit.length === 3 && !isNaN(Number(msgSplit[1]))) {   
-            message.react('⬆️').then(r => {
-                message.react('⬇️');
-            });
-        }
-        else if (msgSplit.length === 4 && msgSplit[1] === "vs") {
-            message.react('1️⃣').then(r => {
-                message.react('2️⃣');
-            });
+    
+    // Only react to O/U channel or VS channel
+    if (message.channel.id === process.env.OU_CHANNEL || process.env.VS_CHANNEL) {
+        var msgSplit = message.content.slice(1).trim().split(' ');
+        if (message.author.id === '791571908511531010') {
+            if (msgSplit.length === 3 && !isNaN(Number(msgSplit[1]))) {   
+                message.react('⬆️').then(r => {
+                    message.react('⬇️');
+                });
+            }
+            else if (msgSplit.length === 4 && msgSplit[1] === "vs") {
+                message.react('1️⃣').then(r => {
+                    message.react('2️⃣');
+                });
+            }
         }
     }
 });
 
 
 client.on('message', message => {
-    if (!message.content.startsWith(prefix)) return;
+    if (!message.content.startsWith(process.env.PREFIX)) return;
 
-    const args = message.content.slice(prefix.length).trim().split(/ +/);
+    const args = message.content.slice(process.env.PREFIX.length).trim().split(/ +/);
     const commandName = args.shift().toLowerCase();
 
     if (!client.commands.has(commandName)) return; 
@@ -54,10 +55,14 @@ client.on('message', message => {
         let reply = `${message.author}, you play on the Bulls or something?`;
 
         if (command.usage) {
-            reply += `\nThe proper usage is: \`${prefix}${command.name} ${command.usage}\``;
+            reply += `\nThe proper usage is: \`${process.env.PREFIX}${command.name} ${command.usage}\``;
         }
 
         return message.channel.send(reply);
+    }
+
+    if (command.maincommand && message.channel.id != process.env.MAIN_CHANNEL) {
+        return message.channel.send(`${message.author}, please only use this command in the #general channel`);
     }
 
     try {
@@ -72,7 +77,7 @@ client.on('messageReactionAdd', (messageReaction, user) => {
     if (user.id === '791571908511531010' || !messageReaction.message.content.startsWith('\`')) return;
 
     // Only the messages sent by the bot 
-    if (messageReaction.message.author.id === '791571908511531010') {
+    if (messageReaction.message.author.id === '791571908511531010' && (messageReaction.message.channel.id === process.env.OU_CHANNEL || messageReaction.message.channel.id === process.env.VS_CHANNEL)) {
         var msgSplit = messageReaction.message.content.slice(1).slice(0,-1).trim().split(' ');
 
         if (msgSplit.length === 3 && !isNaN(Number(msgSplit[1]))) {
@@ -97,7 +102,7 @@ client.on('messageReactionAdd', (messageReaction, user) => {
             }
 
             ouBets.set(key, ouObject);
-            messageReaction.message.channel.send(`> ${user} placed an \`${emoji}\` bet for \`${key}\``);
+            messageReaction.message.client.channels.cache.get(process.env.LOG_CHANNEL).send(`> ${user} placed an \`${emoji}\` bet for \`${key}\``);
         } 
         else if (msgSplit.length === 4 && msgSplit[1] === "vs") {
             var key = messageReaction.message.content.slice(1).slice(0,-1).trim();            
@@ -121,7 +126,7 @@ client.on('messageReactionAdd', (messageReaction, user) => {
             }
 
             vsBets.set(key, vsObject);   
-            messageReaction.message.channel.send(`> ${user} placed a bet on \`${key.split(' ')[index]}\` for \`${key}\``);
+            messageReaction.message.client.channels.cache.get(process.env.LOG_CHANNEL).send(`> ${user} placed a bet on \`${key.split(' ')[index]}\` for \`${key}\``);
         }
     }
 });
@@ -129,19 +134,13 @@ client.on('messageReactionAdd', (messageReaction, user) => {
 client.on('messageReactionRemove', (messageReaction, user) => {
     if (user.id === '791571908511531010' || !messageReaction.message.content.startsWith('\`')) return;
 
-    // Only the messages sent by the bot 
-    if (messageReaction.message.author.id === '791571908511531010') {
+    // Only the messages sent by the bot in active-bet channel
+    if (messageReaction.message.author.id === '791571908511531010' && (messageReaction.message.channel.id === process.env.OU_CHANNEL || messageReaction.message.channel.id === process.env.VS_CHANNEL)) {
         var msgSplit = messageReaction.message.content.slice(1).trim().split(' ');
 
         if (msgSplit.length === 3 && !isNaN(Number(msgSplit[1]))) {
             var key = messageReaction.message.content.slice(1).slice(0,-1).trim();
             
-            // Objects in map will be :
-            // { "_BETNAME" : [
-            //         "OVER":[], 
-            //         "UNDER":[]
-            //     ] 
-            // }
             var ouObject = ouBets.get(key);
             var emoji = '';
             if (messageReaction._emoji.name === '⬆️') {
@@ -161,7 +160,7 @@ client.on('messageReactionRemove', (messageReaction, user) => {
             }
 
             ouBets.set(key, ouObject);
-            messageReaction.message.channel.send(`> ${user} removed an \`${emoji}\` bet for \`${key}\``);
+            messageReaction.message.client.channels.cache.get(process.env.LOG_CHANNEL).send(`> ${user} removed an \`${emoji}\` bet for \`${key}\``);
         } 
         else if (msgSplit.length === 4 && msgSplit[1] === "vs") {
             var key = messageReaction.message.content.slice(1).slice(0,-1).trim();
@@ -185,9 +184,9 @@ client.on('messageReactionRemove', (messageReaction, user) => {
             }
  
             vsBets.set(key, vsObject);   
-            messageReaction.message.channel.send(`> ${user} removed a bet on \`${key.split(' ')[index]}\` for \`${key}\``);
+            messageReaction.message.client.channels.cache.get(process.env.LOG_CHANNEL).send(`> ${user} removed a bet on \`${key.split(' ')[index]}\` for \`${key}\``);
         }
     }
 });
 
-client.login(process.env.DJS_TOKEN);
+client.login(process.env.TOKEN);
