@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
-const { overUnderChannel, vsChannel, logChannel } = require('../config.json');
+require("dotenv").config();
+
 
 module.exports = {
 	name: 'delete',
@@ -14,9 +15,9 @@ module.exports = {
             // Clear the messages from all text channels
 
             // Over/Under
-            await message.client.channels.cache.get(overUnderChannel).messages.fetch({limit: 100}).then(messages => {
-                message.client.channels.cache.get(overUnderChannel).bulkDelete(messages). then(() => {
-                    message.client.channels.cache.get(overUnderChannel).send(`Cleared messages!`).then(msg => {
+            await message.client.channels.cache.get(process.env.OU_CHANNEL).messages.fetch({limit: 100}).then(messages => {
+                message.client.channels.cache.get(process.env.OU_CHANNEL).bulkDelete(messages). then(() => {
+                    message.client.channels.cache.get(process.env.OU_CHANNEL).send(`Cleared messages!`).then(msg => {
                         msg.delete({timeout: 3000});
                     });
                 });
@@ -26,9 +27,9 @@ module.exports = {
             });
 
             // VS 
-            await message.client.channels.cache.get(vsChannel).messages.fetch({limit: 100}).then(messages => {
-                message.client.channels.cache.get(vsChannel).bulkDelete(messages). then(() => {
-                    message.client.channels.cache.get(vsChannel).send(`Cleared messages!`).then(msg => {
+            await message.client.channels.cache.get(process.env.VS_CHANNEL).messages.fetch({limit: 100}).then(messages => {
+                message.client.channels.cache.get(process.env.VS_CHANNEL).bulkDelete(messages). then(() => {
+                    message.client.channels.cache.get(process.env.VS_CHANNEL).send(`Cleared messages!`).then(msg => {
                         msg.delete({timeout: 3000});
                     });
                 });
@@ -38,8 +39,8 @@ module.exports = {
             });
 
             // Separate old logs
-            await message.client.channels.cache.get(logChannel).send(`====================================================`).then(() => {
-                message.client.channels.cache.get(logChannel).send(`====================================================`);
+            await message.client.channels.cache.get(process.env.LOG_CHANNEL).send(`====================================================`).then(() => {
+                message.client.channels.cache.get(process.env.LOG_CHANNEL).send(`====================================================`);
             });
         }
 	},

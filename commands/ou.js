@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
-const { overUnderChannel } = require('../config.json');
+require("dotenv").config();
+
 
 module.exports = {
 	name: 'o/u',
@@ -20,7 +21,7 @@ module.exports = {
         }
         ouBets.set(betString, {"OVER" : new Set(), "UNDER" : new Set()});
 
-        message.client.channels.cache.get(overUnderChannel).send(`\`${betString}\``);
+        message.client.channels.cache.get(process.env.OU_CHANNEL).send(`\`${betString}\``);
 
         const Embed = new Discord.MessageEmbed()
             .setColor('#552583')

@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
-const { vsChannel } = require('../config.json');
+require("dotenv").config();
+
 
 module.exports = {
 	name: 'vs',
@@ -14,7 +15,7 @@ module.exports = {
             return message.channel.send("Bet already exists. Pay attention yea?")
         }
         vsBets.set(betString, {"ONE" : new Set(), "TWO" : new Set()});
-        message.client.channels.cache.get(vsChannel).send(`\`${betString}\``);
+        message.client.channels.cache.get(process.env.VS_CHANNEL).send(`\`${betString}\``);
 
         const Embed = new Discord.MessageEmbed()
             .setColor('#FDB927')
