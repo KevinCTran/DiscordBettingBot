@@ -18,11 +18,12 @@ client.once('ready', () => {
 
 var ouBets = new Map();
 var vsBets = new Map();
+var messageIds = new Map();
 
+// Reacts to bets created
 client.on('message', message => {
     if (!message.content.startsWith('\`')) return;
     
-    // Only react to O/U channel or VS channel
     if (message.channel.id === process.env.OU_CHANNEL || process.env.VS_CHANNEL) {
         var msgSplit = message.content.slice(1).trim().split(' ');
         if (message.author.id === '791571908511531010') {
@@ -41,6 +42,7 @@ client.on('message', message => {
 });
 
 
+// Any other command
 client.on('message', message => {
     if (!message.content.startsWith(process.env.PREFIX)) return;
 
@@ -61,12 +63,8 @@ client.on('message', message => {
         return message.channel.send(reply);
     }
 
-    if (command.maincommand && message.channel.id != process.env.MAIN_CHANNEL) {
-        return message.channel.send(`${message.author}, please only use this command in the #general channel`);
-    }
-
     try {
-        command.execute(message, args, ouBets, vsBets);
+        command.execute(message, args, ouBets, vsBets, messageIds);
     } catch (error) {
         console.log(error);
         message.reply("That command aint make sense my guy");

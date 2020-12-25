@@ -6,9 +6,8 @@ module.exports = {
 	name: 'o/u',
     description: 'Over/Under Bet',
     args: true,
-    maincommand: true,
     usage: '<Player/Team> <Number> <Cat>',
-	execute(message, args, ouBets, vsBets) {
+	execute(message, args, ouBets, vsBets, messageIds) {
         if (isNaN(Number(args[1]))) {
             return message.channel.send('Bet not in correct O/U format.')
         }
@@ -19,9 +18,12 @@ module.exports = {
         if (ouBets.has(betString)) {
             return message.channel.send("Bet already exists. Pay attention yea?")
         }
-        ouBets.set(betString, {"OVER" : new Set(), "UNDER" : new Set()});
 
-        message.client.channels.cache.get(process.env.OU_CHANNEL).send(`\`${betString}\``);
+        ouBets.set(betString, {"OVER" : new Set(), "UNDER" : new Set()});
+        message.client.channels.cache.get(process.env.OU_CHANNEL).send(`\`${betString}\``).then(sent => {
+            let id = sent.id;
+            messageIds.set(betString, id);
+        });
 
         const Embed = new Discord.MessageEmbed()
             .setColor('#552583')

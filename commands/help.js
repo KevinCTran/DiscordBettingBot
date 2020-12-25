@@ -4,7 +4,7 @@ module.exports = {
 	name: 'help',
     description: 'Bot commands',
     args: false,
-	execute(message, args, ouBets, vsBets) {    
+	execute(message, args, ouBets, vsBets, messageIds) {    
         message.channel.send(`\`\`\` Very basic commands. Input is not thoroughly checked.\n **ALWAYS** keep players/teams to one word.\n Current supported commands: \n
         - !bets : Lists all bets 
         - !help : This message lmao

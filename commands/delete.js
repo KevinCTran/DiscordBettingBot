@@ -6,7 +6,7 @@ module.exports = {
 	name: 'delete',
     description: 'Delete all bets',
     args: false,
-	async execute(message, args, ouBets, vsBets) {    
+	async execute(message, args, ouBets, vsBets, messageIds) {    
         if (message.author.id === '325531540547436545') {
             ouBets.clear();
             vsBets.clear();
