@@ -8,7 +8,7 @@ module.exports = {
         if (message.author.id === '325531540547436545') {
             ouBets.clear();
             vsBets.clear();
-            console.log("Cleared!");
+            console.log("Bets Cleared!");
         }
 	},
 };
