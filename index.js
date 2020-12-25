@@ -61,7 +61,6 @@ client.on('message', message => {
     }
 
     try {
-        console.log("HI");
         command.execute(message, args, ouBets, vsBets);
     } catch (error) {
         console.log(error);
@@ -122,7 +121,6 @@ client.on('messageReactionAdd', (messageReaction, user) => {
             }
 
             vsBets.set(key, vsObject);   
-            console.log(vsBets.get(key));
             messageReaction.message.channel.send(`> ${user} placed a bet on \`${key.split(' ')[index]}\` for \`${key}\``);
         }
     }
