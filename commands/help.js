@@ -9,7 +9,7 @@ module.exports = {
         - !bets : Lists all bets 
         - !help : This message lmao
         - !o/u <Player/Team> <Number> <Cat> : Creates an over/under bet 
-        - !vs <Player/Team> <Player/Team> <Cat> : Creates a versus bet.\n\nReact to messages to place your bet. Every bet is considered $1 for now until we aint broke.
+        - !vs <Player/Team> <Player/Team> <Cat> : Creates a versus bet.\n\nReact to messages in the correct channel to place your bet. Every bet is considered $1 for now until we aint broke.
         \`\`\``);
 	},
 };
