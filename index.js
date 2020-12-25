@@ -1,6 +1,6 @@
 const fs = require('fs');
 const Discord = require('discord.js');
-const { prefix, token } = require('./config.json');
+//const { prefix, token } = require('./config.json');
 const { Console } = require('console');
 
 const client = new Discord.Client({intents: Discord.Intents.ALL});
@@ -17,7 +17,7 @@ client.once('ready', () => {
     console.log('READY');
 });
 
-
+var prefix = '!';
 var ouBets = new Map();
 var vsBets = new Map();
 
@@ -192,4 +192,4 @@ client.on('messageReactionRemove', (messageReaction, user) => {
     }
 });
 
-client.login(token);
+client.login(process.env.DJS_TOKEN);
