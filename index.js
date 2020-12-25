@@ -46,7 +46,7 @@ client.on('message', message => {
 client.on('message', message => {
     if (!message.content.startsWith(process.env.PREFIX)) return;
 
-    const args = message.content.slice(process.env.PREFIX.length).trim().split(/ +/);
+    const args = message.content.slice(process.env.PREFIX.length).trim().toLowerCase().split(/ +/);
     const commandName = args.shift().toLowerCase();
 
     if (!client.commands.has(commandName)) return; 
