@@ -53,6 +53,8 @@ module.exports = {
             await message.client.channels.cache.get(process.env.LOG_CHANNEL).send(`====================================================`).then(() => {
                 message.client.channels.cache.get(process.env.LOG_CHANNEL).send(`====================================================`);
             });
+
+            message.channel.send("Deleted all existing bets");
         }
 	},
 };
