@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'bets',
     description: 'List all bets',
-	execute(message, args, ouBets, vsBets, messageIds) {
+	execute(message, args, ouBets, vsBets, messageIds, winnerMap) {
 		if (ouBets.size == 0 && vsBets.size == 0) {
             return message.channel.send("There are no current bets. Hurry and gamble your life away.");
         }
@@ -27,5 +27,6 @@ module.exports = {
     
             message.channel.send(`\`\`\`asciidoc\n${key}\n${dashes}\n${key.split(' ')[0]} Betters: ${[...vsBets.get(key).ONE]}\n${key.split(' ')[2]} Betters: ${[...vsBets.get(key).TWO]}\`\`\``);
         }  
+        message.channel.send("END");
 	},
 };

@@ -7,12 +7,13 @@ module.exports = {
     description: 'Over/Under Bet',
     args: true,
     usage: '<Player/Team> <Number> <Cat>',
-	execute(message, args, ouBets, vsBets, messageIds) {
+	execute(message, args, ouBets, vsBets, messageIds, winnerMap) {
         if (isNaN(Number(args[1]))) {
             return message.channel.send('Bet not in correct O/U format.')
         }
 
         // ex. {Player/TeamName} {Number} {Cat}
+        // LeBron 11 Assists
         let betString = `${args[0]} ${args[1]} ${args[2]}`;
         
         if (ouBets.has(betString)) {

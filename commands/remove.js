@@ -1,4 +1,3 @@
-const Discord = require('discord.js');
 require("dotenv").config();
 
 
@@ -7,7 +6,7 @@ module.exports = {
     description: 'Remove a created bet',
     args: false, // TODO: FIX THIS LOGIC
     usage: '<BetType> <exact string bet was made with>',
-	execute(message, args, ouBets, vsBets, messageIds) {    
+	execute(message, args, ouBets, vsBets, messageIds, winnerMap) {    
         let betType = args[0];
         if (betType === "o/u") {
             

@@ -1,4 +1,3 @@
-const Discord = require('discord.js');
 require("dotenv").config();
 
 
@@ -6,7 +5,7 @@ module.exports = {
 	name: 'delete',
     description: 'Delete all bets',
     args: false,
-	async execute(message, args, ouBets, vsBets, messageIds) {    
+	async execute(message, args, ouBets, vsBets, messageIds, winnerMap) {    
         if (message.author.id === '325531540547436545') {
             ouBets.clear();
             vsBets.clear();
@@ -30,6 +29,18 @@ module.exports = {
             await message.client.channels.cache.get(process.env.VS_CHANNEL).messages.fetch({limit: 100}).then(messages => {
                 message.client.channels.cache.get(process.env.VS_CHANNEL).bulkDelete(messages). then(() => {
                     message.client.channels.cache.get(process.env.VS_CHANNEL).send(`Cleared messages!`).then(msg => {
+                        msg.delete({timeout: 3000});
+                    });
+                });
+            }).catch((err) => {
+                console.log(err);
+                return message.reply("An error occured");
+            });
+
+            // Set Winners
+            await message.client.channels.cache.get(process.env.WIN_CHANNEL).messages.fetch({limit: 100}).then(messages => {
+                message.client.channels.cache.get(process.env.WIN_CHANNEL).bulkDelete(messages). then(() => {
+                    message.client.channels.cache.get(process.env.WIN_CHANNEL).send(`Cleared messages!`).then(msg => {
                         msg.delete({timeout: 3000});
                     });
                 });

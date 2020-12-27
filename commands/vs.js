@@ -8,7 +8,7 @@ module.exports = {
     args: true,
     maincommand: true,
     usage: '<Player/Team> <Player/Team> <Cat>',
-	execute(message, args, ouBets, vsBets, messageIds) {    
+	execute(message, args, ouBets, vsBets, messageIds, winnerMap) {    
         // ex. {Player} {Player} {Stat}
         let betString = `${args[0]} vs ${args[1]} ${args[2]}`;
         if (vsBets.has(betString)) {
