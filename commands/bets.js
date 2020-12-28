@@ -14,7 +14,7 @@ module.exports = {
                 dashes += '-';
             }
 
-            message.channel.send(`\`\`\`asciidoc\n${key}\n${dashes}\nOver Betters: ${[...ouBets.get(key).OVER]}\nUnder Betters: ${[...ouBets.get(key).UNDER]}\`\`\``);
+            message.channel.send(`\`\`\`asciidoc\n${key}\n${dashes}\nOver Betters: ${[...ouBets.get(key).OVER].sort()}\nUnder Betters: ${[...ouBets.get(key).UNDER].sort()}\`\`\``);
         }
 
         message.channel.send(`**__VERSUS BETS:__**`);
@@ -25,7 +25,7 @@ module.exports = {
                 dashes += '-';
             }
     
-            message.channel.send(`\`\`\`asciidoc\n${key}\n${dashes}\n${key.split(' ')[0]} Betters: ${[...vsBets.get(key).ONE]}\n${key.split(' ')[2]} Betters: ${[...vsBets.get(key).TWO]}\`\`\``);
+            message.channel.send(`\`\`\`asciidoc\n${key}\n${dashes}\n${key.split(' ')[0]} Betters: ${[...vsBets.get(key).ONE].sort()}\n${key.split(' ')[2]} Betters: ${[...vsBets.get(key).TWO].sort()}\`\`\``);
         }  
         message.channel.send("END");
 	},

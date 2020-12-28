@@ -16,8 +16,8 @@ module.exports = {
             empty = `> NONE`;
         WIN_CHANNEL.send(`**__OVER/UNDER BETS:__**\n${empty}`);
         for (var [key] of ouBets) {
-            let overBetters = [...ouBets.get(key).OVER];
-            let underBetters = [...ouBets.get(key).UNDER];
+            let overBetters = [...ouBets.get(key).OVER].sort();
+            let underBetters = [...ouBets.get(key).UNDER].sort();
 
             if (overBetters.length == 0 || underBetters.length == 0) 
                 continue;
@@ -40,8 +40,8 @@ module.exports = {
             empty = `> NONE`;
         WIN_CHANNEL.send(`**__VERSUS BETS:__**\n${empty}`);
         for (var [key] of vsBets) {
-            let oneBetters = [...vsBets.get(key).ONE];
-            let twoBetters = [...vsBets.get(key).TWO];
+            let oneBetters = [...vsBets.get(key).ONE].sort();
+            let twoBetters = [...vsBets.get(key).TWO].sort();
 
             if (oneBetters.length == 0 || twoBetters.length == 0) 
                 continue;
