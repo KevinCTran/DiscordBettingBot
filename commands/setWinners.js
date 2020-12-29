@@ -3,7 +3,7 @@ require("dotenv").config();
 module.exports = {
 	name: 'setWinners',
     description: 'List all bets so we can set who won',
-	execute(message, args, ouBets, vsBets, messageIds) {
+	execute(message, args, ouBets, vsBets, messageIds, dbClient) {
 		if (ouBets.size == 0 && vsBets.size == 0) {
             return message.channel.send("There are no current bets. Hurry and gamble your life away.");
         }

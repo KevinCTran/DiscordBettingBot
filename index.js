@@ -1,6 +1,6 @@
 const fs = require('fs');
+const { Client } = require('pg');
 const Discord = require('discord.js');
-//const Sequelize = require('sequelize');
 require("dotenv").config();
 
 const client = new Discord.Client({intents: Discord.Intents.ALL});
@@ -12,6 +12,14 @@ for (const file of commandFiles) {
 	client.commands.set(command.name.toLowerCase(), command);
 }
 
+const dbClient = new Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false
+    }
+});
+dbClient.connect();
+
 client.once('ready', () => {
     console.log('Bot is ready!');
 });
@@ -21,6 +29,7 @@ var ouBets = new Map();
 var vsBets = new Map();
 var messageIds = new Map();
 var winnerMap = new Map();
+
 
 // ONLY reacts to bets created
 client.on('message', message => {
@@ -84,7 +93,7 @@ client.on('message', message => {
     try {
         // Only execute if message is from the same server
         if (message.channel.id === message.client.channels.cache.get(process.env.MAIN_CHANNEL).id)
-            command.execute(message, args, ouBets, vsBets, messageIds, winnerMap);
+            command.execute(message, args, ouBets, vsBets, messageIds, winnerMap, dbClient);
     } catch (error) {
         console.log(error);
         message.reply("That command aint make sense my guy");

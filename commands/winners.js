@@ -6,7 +6,7 @@ module.exports = {
 	name: 'winners',
     description: 'Calculate and display winners for the day',
     args: false,
-	execute(message, args, ouBets, vsBets, messageIds, winnerMap) {
+	execute(message, args, ouBets, vsBets, messageIds, winnerMap, dbClient) {
         let WinnersCalc = new Map();
 
         for (let [key, value] of winnerMap) {
@@ -116,7 +116,9 @@ module.exports = {
             }
         }
 
-        // Output winners
+        let todayOutcome = new Map();
+
+        // Output winners and get outcome of day
         console.log("AFTER");
         console.log([...WinnersCalc]);
         for (let [key, value] of WinnersCalc) {
@@ -127,7 +129,33 @@ module.exports = {
             let winner = splitKey[1];
             let oweString = `\`${loser} owes ${winner} $${value}\``;
 
+            if (todayOutcome.has(loser)) {
+                todayOutcome.set(loser, todayOutcome.get(loser) - value);
+            } else {
+                todayOutcome.set(loser, -value);
+            }
+
+            if (todayOutcome.has(winner)) {
+                todayOutcome.set(winner, todayOutcome.get(winner) + value);
+            } else {
+                todayOutcome.set(winner, value);
+            }
+
             message.channel.send(oweString);
+        }
+
+        for (let [key, value] of todayOutcome) {
+            console.log(`key: ${key} value: ${value}`)
+
+            const query = `INSERT INTO winnings(name, amount) 
+            VALUES ('${key}', ${value}) 
+            ON CONFLICT (name) DO 
+                UPDATE SET amount = winnings.amount + ${value} RETURNING *`;
+    
+            dbClient
+                .query(query)
+                .then(res => console.log(res.rows[0]))
+                .catch(e => console.error(e.stack));
         }
     },
 };
