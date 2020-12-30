@@ -9,6 +9,8 @@ module.exports = {
         if (message.author.id === '325531540547436545') {
             ouBets.clear();
             vsBets.clear();
+            messageIds.clear();
+            winnerMap.clear();
             console.log("Cleared the Maps");
 
             // Clear the messages from all text channels
