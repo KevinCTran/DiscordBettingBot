@@ -7,7 +7,7 @@ module.exports = {
     description: 'Over/Under Bet',
     args: true,
     usage: '<Player/Team> <Number> <Cat>',
-	execute(message, args, ouBets, vsBets, messageIds, winnerMap, dbClient) {
+	execute(message, args, ouBets, vsBets, messageIds, winnerMap) {
         if (isNaN(Number(args[1]))) {
             return message.channel.send('Bet not in correct O/U format.')
         }

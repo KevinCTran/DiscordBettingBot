@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const { Client } = require('pg');
 require("dotenv").config();
 
 
@@ -6,7 +7,15 @@ module.exports = {
 	name: 'winners',
     description: 'Calculate and display winners for the day',
     args: false,
-	execute(message, args, ouBets, vsBets, messageIds, winnerMap, dbClient) {
+	execute(message, args, ouBets, vsBets, messageIds, winnerMap) {
+        const dbClient = new Client({
+            connectionString: process.env.DATABASE_URL,
+            ssl: {
+                rejectUnauthorized: false
+            }
+        });
+        dbClient.connect();
+
         let WinnersCalc = new Map();
 
         for (let [key, value] of winnerMap) {
@@ -155,7 +164,10 @@ module.exports = {
             dbClient
                 .query(query)
                 .then(res => console.log(res.rows[0]))
-                .catch(e => console.error(e.stack));
+                .catch(e => console.error(e.stack))
+                .finally(() => {
+                    dbClient.end();
+                });
         }
     },
 };

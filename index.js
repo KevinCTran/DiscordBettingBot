@@ -1,5 +1,4 @@
 const fs = require('fs');
-const { Client } = require('pg');
 const Discord = require('discord.js');
 require("dotenv").config();
 
@@ -11,14 +10,6 @@ for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	client.commands.set(command.name.toLowerCase(), command);
 }
-
-const dbClient = new Client({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false
-    }
-});
-dbClient.connect();
 
 client.once('ready', () => {
     console.log('Bot is ready!');
@@ -93,7 +84,7 @@ client.on('message', message => {
     try {
         // Only execute if message is from the same server
         if (message.channel.id === message.client.channels.cache.get(process.env.MAIN_CHANNEL).id)
-            command.execute(message, args, ouBets, vsBets, messageIds, winnerMap, dbClient);
+            command.execute(message, args, ouBets, vsBets, messageIds, winnerMap);
     } catch (error) {
         console.log(error);
         message.reply("That command aint make sense my guy");

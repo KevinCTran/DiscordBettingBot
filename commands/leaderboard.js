@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const { Client } = require('pg');
 require("dotenv").config();
 
 
@@ -6,7 +7,15 @@ module.exports = {
 	name: 'leaderboard',
     description: 'Displays leaderboard',
     args: false,
-	execute(message, args, ouBets, vsBets, messageIds, winnerMap, dbClient) {
+	execute(message, args, ouBets, vsBets, messageIds, winnerMap) {
+        const dbClient = new Client({
+            connectionString: process.env.DATABASE_URL,
+            ssl: {
+                rejectUnauthorized: false
+            }
+        });
+        dbClient.connect();
+
         const query = `select * from winnings`;
             let board = [];
 
@@ -31,6 +40,9 @@ module.exports = {
 
                     message.channel.send(Embed);
                 })
-                .catch(e => console.error(e.stack));
+                .catch(e => console.error(e.stack))
+                .finally(() => {
+                    dbClient.end();
+                });
     },
 };
