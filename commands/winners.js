@@ -8,13 +8,7 @@ module.exports = {
     description: 'Calculate and display winners for the day',
     args: false,
 	execute(message, args, ouBets, vsBets, messageIds, winnerMap) {
-        const dbClient = new Client({
-            connectionString: process.env.DATABASE_URL,
-            ssl: {
-                rejectUnauthorized: false
-            }
-        });
-        dbClient.connect();
+        
 
         let WinnersCalc = new Map();
 
@@ -126,6 +120,7 @@ module.exports = {
         }
 
         let todayOutcome = new Map();
+        let oweArray = [];
 
         // Output winners and get outcome of day
         console.log("AFTER");
@@ -138,6 +133,8 @@ module.exports = {
             let winner = splitKey[1];
             let oweString = `\`${loser} owes ${winner} $${value}\``;
 
+            oweArray.push(oweString);
+
             if (todayOutcome.has(loser)) {
                 todayOutcome.set(loser, todayOutcome.get(loser) - value);
             } else {
@@ -149,9 +146,22 @@ module.exports = {
             } else {
                 todayOutcome.set(winner, value);
             }
-
-            message.channel.send(oweString);
         }
+
+        let totalOweString = ``;
+        oweArray.sort();
+        oweArray.forEach(function(oweString) {
+            totalOweString += `${oweString}\n`
+        });
+        message.channel.send(totalOweString);
+
+        const dbClient = new Client({
+            connectionString: process.env.DATABASE_URL,
+            ssl: {
+                rejectUnauthorized: false
+            }
+        });
+        
 
         for (let [key, value] of todayOutcome) {
             console.log(`key: ${key} value: ${value}`)
@@ -160,6 +170,8 @@ module.exports = {
             VALUES ('${key}', ${value}) 
             ON CONFLICT (name) DO 
                 UPDATE SET amount = winnings.amount + ${value} RETURNING *`;
+
+            dbClient.connect();
     
             dbClient
                 .query(query)
