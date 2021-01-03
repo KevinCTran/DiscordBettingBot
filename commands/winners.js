@@ -153,33 +153,46 @@ module.exports = {
         oweArray.forEach(function(oweString) {
             totalOweString += `${oweString}\n`
         });
-        message.channel.send(totalOweString);
 
-        const dbClient = new Client({
+        if (totalOweString) {
+            message.channel.send(totalOweString);
+        } else {
+            message.channel.send(`\`\`\`Nobody owes anything.\`\`\``);
+        }
+
+        let dbClient = new Client({
             connectionString: process.env.DATABASE_URL,
             ssl: {
                 rejectUnauthorized: false
             }
         });
+
+        dbClient 
+            .connect()
+            .then(async function() {
+                for (let [key, value] of todayOutcome) {
+                    console.log(`key: ${key} value: ${value}`)
         
-
-        for (let [key, value] of todayOutcome) {
-            console.log(`key: ${key} value: ${value}`)
-
-            const query = `INSERT INTO winnings(name, amount) 
-            VALUES ('${key}', ${value}) 
-            ON CONFLICT (name) DO 
-                UPDATE SET amount = winnings.amount + ${value} RETURNING *`;
-
-            dbClient.connect();
-    
-            dbClient
-                .query(query)
-                .then(res => console.log(res.rows[0]))
-                .catch(e => console.error(e.stack))
-                .finally(() => {
-                    dbClient.end();
-                });
-        }
+                    let query = `INSERT INTO winnings(name, amount) 
+                    VALUES ('${key}', ${value}) 
+                    ON CONFLICT (name) DO 
+                        UPDATE SET amount = winnings.amount + ${value} RETURNING *`;
+        
+                    console.log(query);
+            
+                    await dbClient
+                        .query(query)
+                        .then(res => console.log(res.rows[0]))
+                        .catch(e => {
+                            console.log("error in this catch");
+                            console.error(e.stack);
+                        });
+                }
+            })
+            .catch(e => console.error(e.stack))
+            .finally(() => {
+                console.log("in the finally");
+                dbClient.end();
+            });
     },
 };

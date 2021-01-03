@@ -8,7 +8,8 @@ module.exports = {
     description: 'Displays leaderboard',
     args: false,
 	execute(message, args, ouBets, vsBets, messageIds, winnerMap) {
-        const dbClient = new Client({
+        console.log("Starting leaderboard");
+        let dbClient = new Client({
             connectionString: process.env.DATABASE_URL,
             ssl: {
                 rejectUnauthorized: false
