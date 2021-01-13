@@ -10,7 +10,7 @@ module.exports = {
         let betType = args[0];
         if (betType === "o/u") {
             
-            let key = message.content.split(' ').slice(2).join(' ');
+            let key = message.content.split(' ').slice(2).join(' ').toLowerCase();
             if (ouBets.has(key)) {
                 let messageId = messageIds.get(key);
                 
@@ -25,7 +25,7 @@ module.exports = {
             }
         }
         else if (betType === "vs") {
-            let key = `${args[1]} vs ${args[2]} ${args[3]}`
+            let key = `${args[1]} vs ${args[2]} ${args[3]}`.toLowerCase()
             
             if (vsBets.has(key)) {
                 let messageId = messageIds.get(key);
