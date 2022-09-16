@@ -15,39 +15,64 @@ module.exports = {
         // Clear the messages from all text channels
 
         // Over/Under
-        await message.client.channels.cache.get(process.env.OU_CHANNEL).messages.fetch({limit: 100}).then(messages => {
-            message.client.channels.cache.get(process.env.OU_CHANNEL).bulkDelete(messages). then(() => {
-                message.client.channels.cache.get(process.env.OU_CHANNEL).send(`Cleared messages!`).then(msg => {
-                    msg.delete({timeout: 3000});
-                });
-            });
-        }).catch((err) => {
+        // await message.client.channels.cache.get(process.env.OU_CHANNEL).messages.fetch({limit: 100}).then(messages => {
+        //     message.client.channels.cache.get(process.env.OU_CHANNEL).bulkDelete(messages). then(() => {
+        //         message.client.channels.cache.get(process.env.OU_CHANNEL).send(`Cleared messages!`).then(msg => {
+        //             msg.delete({timeout: 3000});
+        //         });
+        //     });
+        // }).catch((err) => {
+        //     console.log(err);
+        //     return message.reply("An error occured");
+        // });
+
+        message.client.channels.cache.get(process.env.OU_CHANNEL).messages.fetch({limit: 100})
+        .then(messages => {if (messages) {message.client.channels.cache.get(process.env.OU_CHANNEL).bulkDelete(messages);}})
+        .then(() => {message.client.channels.cache.get(process.env.OU_CHANNEL).send(`Cleared messages!`);})
+        .then(msg => {if (msg) {msg.delete({timeout: 3000});}})
+        .catch((err) => {
             console.log(err);
-            return message.reply("An error occured");
+            return message.reply(err);
         });
 
         // VS 
-        await message.client.channels.cache.get(process.env.VS_CHANNEL).messages.fetch({limit: 100}).then(messages => {
-            message.client.channels.cache.get(process.env.VS_CHANNEL).bulkDelete(messages). then(() => {
-                message.client.channels.cache.get(process.env.VS_CHANNEL).send(`Cleared messages!`).then(msg => {
-                    msg.delete({timeout: 3000});
-                });
-            });
-        }).catch((err) => {
+        // await message.client.channels.cache.get(process.env.VS_CHANNEL).messages.fetch({limit: 100}).then(messages => {
+        //     message.client.channels.cache.get(process.env.VS_CHANNEL).bulkDelete(messages). then(() => {
+        //         message.client.channels.cache.get(process.env.VS_CHANNEL).send(`Cleared messages!`).then(msg => {
+        //             msg.delete({timeout: 3000});
+        //         });
+        //     });
+        // }).catch((err) => {
+        //     console.log(err);
+        //     return message.reply("An error occured");
+        // });
+        message.client.channels.cache.get(process.env.VS_CHANNEL).messages.fetch({limit: 100})
+        .then(messages => {if (messages) {message.client.channels.cache.get(process.env.VS_CHANNEL).bulkDelete(messages);}})
+        .then(() => {message.client.channels.cache.get(process.env.VS_CHANNEL).send(`Cleared messages!`);})
+        .then(msg => {if (msg) {msg.delete({timeout: 3000});}})
+        .catch((err) => {
             console.log(err);
-            return message.reply("An error occured");
+            return message.reply(err);
         });
 
         // Set Winners
-        await message.client.channels.cache.get(process.env.WIN_CHANNEL).messages.fetch({limit: 100}).then(messages => {
-            message.client.channels.cache.get(process.env.WIN_CHANNEL).bulkDelete(messages). then(() => {
-                message.client.channels.cache.get(process.env.WIN_CHANNEL).send(`Cleared messages!`).then(msg => {
-                    msg.delete({timeout: 3000});
-                });
-            });
-        }).catch((err) => {
+        // await message.client.channels.cache.get(process.env.WIN_CHANNEL).messages.fetch({limit: 100}).then(messages => {
+        //     message.client.channels.cache.get(process.env.WIN_CHANNEL).bulkDelete(messages). then(() => {
+        //         message.client.channels.cache.get(process.env.WIN_CHANNEL).send(`Cleared messages!`).then(msg => {
+        //             msg.delete({timeout: 3000});
+        //         });
+        //     });
+        // }).catch((err) => {
+        //     console.log(err);
+        //     return message.reply("An error occured");
+        // });
+        message.client.channels.cache.get(process.env.WIN_CHANNEL).messages.fetch({limit: 100})
+        .then(messages => {if (messages) {message.client.channels.cache.get(process.env.WIN_CHANNEL).bulkDelete(messages);}})
+        .then(() => {message.client.channels.cache.get(process.env.WIN_CHANNEL).send(`Cleared messages!`);})
+        .then(msg => {if (msg) {msg.delete({timeout: 3000});}})
+        .catch((err) => {
             console.log(err);
-            return message.reply("An error occured");
+            return message.reply(err);
         });
 
         // Separate old logs
