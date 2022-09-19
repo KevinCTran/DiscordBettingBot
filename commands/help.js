@@ -7,10 +7,11 @@ module.exports = {
         - !bets : Lists all bets 
         - !help : This message
         - !o/u <Player/Team> <Number> <Cat> : Creates an over/under bet 
-        - !vs <Player/Team> <Player/Team> <Cat> : Creates a versus bet.
+        - !vs <Player/Team> <Player/Team> <Cat> : Creates a versus bet
         - !remove <betType (o/u, vs)> <Same params as o/u or vs>
         - !setWinners : Lists bets in #set-winners for reactions to set winners
-        - !winners : Calculates and displays who owes who money\n\nReact to messages in the correct channel to place your bet. Every bet is considered $1 for now until we aint broke.
+        - !winners : Calculates and displays who owes who money\n\nReact to messages in the correct channel to place your bet
+        - !leaderboard : Display total net for each gambling addict
         \`\`\``);
 	},
 };

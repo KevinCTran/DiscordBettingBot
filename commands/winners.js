@@ -43,9 +43,9 @@ module.exports = {
                     
                     // If exists, increment. Else, set to 1
                     if (WinnersCalc.has(winString)) {
-                        WinnersCalc.set(winString, WinnersCalc.get(winString) + 1);
+                        WinnersCalc.set(winString, WinnersCalc.get(winString) + process.env.BET_AMT);
                     } else {
-                        WinnersCalc.set(winString, 1);
+                        WinnersCalc.set(winString, process.env.BET_AMT);
                     }
                 }
             } 
@@ -68,9 +68,9 @@ module.exports = {
                     
                         // If exists, increment. Else, set to 1
                         if (WinnersCalc.has(winString)) {
-                            WinnersCalc.set(winString, WinnersCalc.get(winString) + 1);
+                            WinnersCalc.set(winString, WinnersCalc.get(winString) + process.env.BET_AMT);
                         } else {
-                            WinnersCalc.set(winString, 1);
+                            WinnersCalc.set(winString, process.env.BET_AMT);
                         }
                     }
                     
