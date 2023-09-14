@@ -45,13 +45,11 @@ module.exports = {
                     );
                 
                 // send to general channel to show bet is created
-                // const gen_channel = interaction.client.channels.cache.get(process.env.MAIN_CHANNEL);
-                const gen_channel = interaction.client.channels.cache.get('791557337085116450');
+                const gen_channel = interaction.client.channels.cache.get(process.env.MAIN_CHANNEL);
                 await interaction.reply({ embeds: [Embed] });
 
-                // send to O/U channel so that users can bet 
-                // const gen_channel = interaction.client.channels.cache.get(process.env.VS_CHANNEL);
-                const ou_channel = interaction.client.channels.cache.get('791935704086216725');
+                // send to VS channel so that users can bet 
+                const ou_channel = interaction.client.channels.cache.get(process.env.VS_CHANNEL);
                 const newEmbed = new EmbedBuilder()
                     .setColor('#FDB927')
                     .addFields(
