@@ -17,6 +17,9 @@ module.exports = {
             for (const doc of LeaderboardDocuments) {
                 newEmbed.addField(doc.username, `$${doc.money.toString()}`)
             }
+
+            await interaction.reply({ embeds: [newEmbed] });
+            
         } catch (error) {
             console.error('Error:', error);
 		} 
