@@ -68,11 +68,8 @@ module.exports = {
         updateDocuments(Vs);
 
         // Strikethrough all previous messages in the bet channel
-        // const channel = interaction.client.channels.cache.get(process.env.OU_CHANNEL);
-        // const channel = interaction.client.channels.cache.get(process.env.VS_CHANNEL);
-
-        const ouChannel = interaction.client.channels.cache.get('1151426700123586600');
-        const vsChannel = interaction.client.channels.cache.get('791935704086216725');
+        const ouChannel = interaction.client.channels.cache.get(process.env.OU_CHANNEL);
+        const vsChannel = interaction.client.channels.cache.get(process.env.VS_CHANNEL);
 
 
         strikeMessages(ouChannel, "ou");

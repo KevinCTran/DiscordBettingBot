@@ -1,6 +1,7 @@
 const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 const { Overunder } = require('../../schemas/overunder');
 const { Vs } = require('../../schemas/vs');
+const { Leaderboard } = require('../../schemas/leaderboard');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -125,6 +126,7 @@ module.exports = {
             }
         }
 
+        // Go through Winners and update leaderboard
         // Create the Embed to send            
         const newEmbed = new EmbedBuilder()
             .setColor('#118c4f')
@@ -136,6 +138,36 @@ module.exports = {
             let loser = splitKey[0];
             let winner = splitKey[1];
 
+            try {
+				const result = await Leaderboard.findOneAndUpdate({ username: winner }, 
+					{ $inc: { money: 1 } }, 
+					{ upsert: true, new: true });
+				
+				if (result !== null) {
+					console.log(`Added ${process.env.BET_AMT} to ${winner}`)
+				}
+				else {
+					console.log(`Didn't find document. Adding ${username} to leaderboard.`);
+				}
+			} catch (error) {
+				console.error('Error finding and replacing document:', error);
+			}
+
+            try {
+				const result = await Leaderboard.findOneAndUpdate({ username: loser }, 
+					{ $inc: { money: -1 } }, 
+					{ upsert: true, new: true });
+				
+				if (result !== null) {
+					console.log(`Removed ${process.env.BET_AMT} from ${loser}`)
+				}
+				else {
+					console.log(`Didn't find document. Adding ${username} to leaderboard.`);
+				}
+			} catch (error) {
+				console.error('Error finding and replacing document:', error);
+			}
+            
             newEmbed.addFields( {name: '\u200B', value: `${loser} owes ${winner} $${value}`} );
         }
         interaction.reply({ embeds: [newEmbed] });
