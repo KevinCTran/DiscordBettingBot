@@ -13,6 +13,8 @@ module.exports = {
         // 4. When people react to a message, also update the entry in the db
         // 5. now, we know who bet on what team, so just calculate
         // 6. update the leaderboard schema 
+		await interaction.reply("Displaying active bets")
+		
 		try {
 			const OverunderDocuments = await Overunder.find({ overBetters: { $ne: [] }, underBetters: { $ne: [] }, active: true }).exec();
 			console.log('Matching Overunder Documents:', OverunderDocuments);
@@ -58,7 +60,7 @@ module.exports = {
 				});
 			}
 
-			await interaction.reply("Displaying active bets")
+			
 		} catch (error) {
 			console.error('Error:', error);
 		} 

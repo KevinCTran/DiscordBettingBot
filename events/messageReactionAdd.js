@@ -58,6 +58,18 @@ module.exports = {
 					await updateDocuments(Vs, criteria, 'twoBetters', user.username)
 				}
 			}
+		} else {
+			// Remove reaction to the message if it's inactive, make it unbettable 
+			try {
+				if (channel === process.env.OU_CHANNEL) {
+					await message.reactions.resolve('⬆️')?.users.remove(user.id);
+				} 
+				else if (channel === process.env.VS_CHANNEL) {
+					await message.reactions.resolve('1️⃣')?.users.remove(user.id);
+				}
+			} catch (error) {
+				console.error(`Error removing ${user}'s reaction to inactive bet`, error);
+			}
 		}
 	}
 };

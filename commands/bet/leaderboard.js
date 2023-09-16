@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 const { Leaderboard } = require('../../schemas/leaderboard');
 
 module.exports = {
@@ -15,7 +15,7 @@ module.exports = {
                 .setTitle('LEADERBOARD');
     
             for (const doc of LeaderboardDocuments) {
-                newEmbed.addField(doc.username, `$${doc.money.toString()}`)
+                newEmbed.addFields({ name: doc.username, value: `$${doc.money.toString()}`} );
             }
 
             await interaction.reply({ embeds: [newEmbed] });

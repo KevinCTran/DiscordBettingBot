@@ -131,6 +131,7 @@ module.exports = {
         const newEmbed = new EmbedBuilder()
             .setColor('#118c4f')
             .setTitle('Pay Up Bitches');
+        const embedDict = new Map();
 
         console.log(WinnersCalc)
         for (const [key, value] of WinnersCalc) {
@@ -168,8 +169,18 @@ module.exports = {
 				console.error('Error finding and replacing document:', error);
 			}
             
+            if (!embedDict.has(loser)) {
+                embedDict.set(loser, [winner]);
+            } else {
+                embedDict.set(loser, embedDict.get(loser).push(winner));
+            }
+            
             newEmbed.addFields( {name: '\u200B', value: `${loser} owes ${winner} $${value}`} );
+            // Add to dictionary here instead
         }
+        // Loop through KEYS of the dictionary, create an Embed for each user that owes 
+
+        // Make a separate Embed for each user that owes 
         interaction.reply({ embeds: [newEmbed] });
 	},
 };
