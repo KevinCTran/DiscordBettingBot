@@ -173,11 +173,9 @@ module.exports = {
                 loserArray = embedDict.get(loser);
                 loserArray.push((winner, value));
                 embedDict.set(loser, loserArray);
-            }
-            
-            newEmbed.addFields( {name: '\u200B', value: `${loser} owes ${winner} $${value}`} );
-            // Add to dictionary here instead
+            }            
         }
+        
         // Make a separate Embed for each user that owes 
         // Create the Embed to send            
         const newEmbed = new EmbedBuilder()
