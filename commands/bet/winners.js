@@ -143,11 +143,11 @@ module.exports = {
 
             try {
 				const result = await Leaderboard.findOneAndUpdate({ username: winner }, 
-					{ $inc: { money: 1 } }, 
+					{ $inc: { money: [value] } }, 
 					{ upsert: true, new: true });
 				
 				if (result !== null) {
-					console.log(`Added ${process.env.BET_AMT} to ${winner}`)
+					console.log(`Added ${value.toString()} to ${winner}`)
 				}
 				else {
 					console.log(`Didn't find document. Adding ${username} to leaderboard.`);
@@ -158,11 +158,11 @@ module.exports = {
 
             try {
 				const result = await Leaderboard.findOneAndUpdate({ username: loser }, 
-					{ $inc: { money: -1 } }, 
+					{ $inc: { money: [-value] } }, 
 					{ upsert: true, new: true });
 				
 				if (result !== null) {
-					console.log(`Removed ${process.env.BET_AMT} from ${loser}`)
+					console.log(`Removed ${value.toString()} from ${loser}`)
 				}
 				else {
 					console.log(`Didn't find document. Adding ${username} to leaderboard.`);
