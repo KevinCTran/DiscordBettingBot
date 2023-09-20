@@ -168,24 +168,22 @@ module.exports = {
 			}
             
             if (!embedDict.has(loser)) {
-                embedDict.set(loser, [(winner, value)]);
+                embedDict.set(loser, [{winner, value}]);
             } else {
                 loserArray = embedDict.get(loser);
-                loserArray.push((winner, value));
+                loserArray.push({winner, value});
                 embedDict.set(loser, loserArray);
             }            
         }
 
-        // Make a separate Embed for each user that owes 
         // Create the Embed to send            
         const newEmbed = new EmbedBuilder()
             .setColor('#118c4f')
-            .setTitle('Pay Up Bitches');
+            .setTitle('Pay Up');
         for (const [loser, winnerArray] of embedDict) {
             embedString = ``;
-            console.log(winnerArray);
-            for (const [winner, winAmt] of winnerArray) {
-                embedString += `-${winner} ... ${winAmt}\n`;
+            for (const entry of winnerArray) {
+                embedString += `- ${entry.winner} ... $${entry.value}\n`;
             }
             newEmbed.addFields( {name: `${loser} owes:`, value: embedString} );
         }
