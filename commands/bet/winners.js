@@ -175,16 +175,15 @@ module.exports = {
                 embedDict.set(loser, loserArray);
             }            
         }
-        
+
         // Make a separate Embed for each user that owes 
         // Create the Embed to send            
         const newEmbed = new EmbedBuilder()
             .setColor('#118c4f')
             .setTitle('Pay Up Bitches');
-        for (const [key, value] of embedDict) {
-            loser = key;
-            winnerArray = value;
+        for (const [loser, winnerArray] of embedDict) {
             embedString = ``;
+            console.log(winnerArray);
             for (const [winner, winAmt] of winnerArray) {
                 embedString += `-${winner} ... ${winAmt}\n`;
             }
