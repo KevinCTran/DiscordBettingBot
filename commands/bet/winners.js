@@ -127,10 +127,6 @@ module.exports = {
         }
 
         // Go through Winners and update leaderboard
-        // Create the Embed to send            
-        const newEmbed = new EmbedBuilder()
-            .setColor('#118c4f')
-            .setTitle('Pay Up Bitches');
         const embedDict = new Map();
 
         console.log(WinnersCalc)
@@ -172,18 +168,30 @@ module.exports = {
 			}
             
             if (!embedDict.has(loser)) {
-                embedDict.set(loser, [winner]);
+                embedDict.set(loser, [(winner, value)]);
             } else {
                 loserArray = embedDict.get(loser);
-                loserArray.push(winner);
+                loserArray.push((winner, value));
                 embedDict.set(loser, loserArray);
             }
             
-            newEmbed.addFields( {name: '\u200B', value: `@${loser} owes @${winner} $${value}`} );
+            newEmbed.addFields( {name: '\u200B', value: `${loser} owes ${winner} $${value}`} );
             // Add to dictionary here instead
         }
-        // TODO: Loop through KEYS of the dictionary, create an Embed for each user that owes 
         // Make a separate Embed for each user that owes 
+        // Create the Embed to send            
+        const newEmbed = new EmbedBuilder()
+            .setColor('#118c4f')
+            .setTitle('Pay Up Bitches');
+        for (const [key, value] of embedDict) {
+            loser = key;
+            winnerArray = value;
+            embedString = ``;
+            for (const [winner, winAmt] of winnerArray) {
+                embedString += `-${winner} ... ${winAmt}\n`;
+            }
+            newEmbed.addFields( {name: `${loser} owes:`, value: embedString} );
+        }
 
         interaction.reply({ embeds: [newEmbed] });
 	},
