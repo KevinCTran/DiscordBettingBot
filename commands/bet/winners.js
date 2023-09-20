@@ -139,6 +139,8 @@ module.exports = {
             let loser = splitKey[0];
             let winner = splitKey[1];
 
+            if (value === 0) { continue; }
+
             try {
 				const result = await Leaderboard.findOneAndUpdate({ username: winner }, 
 					{ $inc: { money: 1 } }, 
