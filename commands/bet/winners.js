@@ -143,7 +143,7 @@ module.exports = {
 
             try {
 				const result = await Leaderboard.findOneAndUpdate({ username: winner }, 
-					{ $inc: { money: [value] } }, 
+					{ $inc: { money: value } }, 
 					{ upsert: true, new: true });
 				
 				if (result !== null) {
@@ -158,7 +158,7 @@ module.exports = {
 
             try {
 				const result = await Leaderboard.findOneAndUpdate({ username: loser }, 
-					{ $inc: { money: [-value] } }, 
+					{ $inc: { money: -value } }, 
 					{ upsert: true, new: true });
 				
 				if (result !== null) {
@@ -182,9 +182,9 @@ module.exports = {
             newEmbed.addFields( {name: '\u200B', value: `${loser} owes ${winner} $${value}`} );
             // Add to dictionary here instead
         }
-        // Loop through KEYS of the dictionary, create an Embed for each user that owes 
-
+        // TODO: Loop through KEYS of the dictionary, create an Embed for each user that owes 
         // Make a separate Embed for each user that owes 
+
         interaction.reply({ embeds: [newEmbed] });
 	},
 };
