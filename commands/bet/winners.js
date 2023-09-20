@@ -31,14 +31,14 @@ module.exports = {
 
                             // Check reverse first to see if we can just cancel out
                             if (WinnersCalc.has(reversebetString) && WinnersCalc.get(reversebetString) > 0) {
-                                WinnersCalc.set(reversebetString, WinnersCalc.get(reversebetString) - process.env.BET_AMT);
+                                WinnersCalc.set(reversebetString, WinnersCalc.get(reversebetString) - parseInt(process.env.BET_AMT));
                                 if (WinnersCalc.get(reversebetString) === 0) { delete WinnersCalc[reversebetString]; } 
                                 return;
                             }
                             
                             // If there's no reverse, calculate as normal
                             if (!WinnersCalc.has(betString)) {
-                                WinnersCalc.set(betString, process.env.BET_AMT);
+                                WinnersCalc.set(betString, parseInt(process.env.BET_AMT));
                             } else {
                                 WinnersCalc.set(betString, WinnersCalc.get(betString) + 1);
                             }
@@ -53,14 +53,14 @@ module.exports = {
 
                             // Check reverse first to see if we can just cancel out
                             if (WinnersCalc.has(reversebetString) && WinnersCalc.get(reversebetString) > 0) {
-                                WinnersCalc.set(reversebetString, WinnersCalc.get(reversebetString) - process.env.BET_AMT);
+                                WinnersCalc.set(reversebetString, WinnersCalc.get(reversebetString) - parseInt(process.env.BET_AMT));
                                 if (WinnersCalc.get(reversebetString) === 0) { delete WinnersCalc[reversebetString]; } 
                                 return;
                             }
                             
                             // If there's no reverse, calculate as normal
                             if (!WinnersCalc.has(betString)) {
-                                WinnersCalc.set(betString, process.env.BET_AMT);
+                                WinnersCalc.set(betString, parseInt(process.env.BET_AMT));
                             } else {
                                 WinnersCalc.set(betString, WinnersCalc.get(betString) + 1);
                             }
@@ -87,14 +87,14 @@ module.exports = {
     
                             // Check reverse first to see if we can just cancel out
                             if (WinnersCalc.has(reversebetString) && WinnersCalc.get(reversebetString) > 0) {
-                                WinnersCalc.set(reversebetString, WinnersCalc.get(reversebetString) - process.env.BET_AMT);
+                                WinnersCalc.set(reversebetString, WinnersCalc.get(reversebetString) - parseInt(process.env.BET_AMT));
                                 if (WinnersCalc[reversebetString] === 0) { delete WinnersCalc[reversebetString]; } 
                                 return;
                             }
                             
                             // If there's no reverse, calculate as normal
                             if (!WinnersCalc.has(betString)) {
-                                WinnersCalc.set(betString, process.env.BET_AMT);
+                                WinnersCalc.set(betString, parseInt(process.env.BET_AMT));
                             } else {
                                 WinnersCalc.set(betString, WinnersCalc.get(betString) + 1);
                             }
@@ -109,14 +109,14 @@ module.exports = {
     
                             // Check reverse first to see if we can just cancel out
                             if (WinnersCalc.has(reversebetString) && WinnersCalc.get(reversebetString) > 0) {
-                                WinnersCalc.set(reversebetString, WinnersCalc.get(reversebetString) - process.env.BET_AMT);
+                                WinnersCalc.set(reversebetString, WinnersCalc.get(reversebetString) - parseInt(process.env.BET_AMT));
                                 if (WinnersCalc[reversebetString] === 0) { delete WinnersCalc[reversebetString]; } 
                                 return;
                             }
                             
                             // If there's no reverse, calculate as normal
                             if (!WinnersCalc.has(betString)) {
-                                WinnersCalc.set(betString, process.env.BET_AMT);
+                                WinnersCalc.set(betString, parseInt(process.env.BET_AMT));
                             } else {
                                 WinnersCalc.set(betString, WinnersCalc.get(betString) + 1);
                             }
@@ -172,7 +172,9 @@ module.exports = {
             if (!embedDict.has(loser)) {
                 embedDict.set(loser, [winner]);
             } else {
-                embedDict.set(loser, embedDict.get(loser).push(winner));
+                loserArray = embedDict.get(loser);
+                loserArray.push(winner);
+                embedDict.set(loser, loserArray);
             }
             
             newEmbed.addFields( {name: '\u200B', value: `${loser} owes ${winner} $${value}`} );
