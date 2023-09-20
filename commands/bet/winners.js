@@ -179,7 +179,7 @@ module.exports = {
                 embedDict.set(loser, loserArray);
             }
             
-            newEmbed.addFields( {name: '\u200B', value: `${loser} owes ${winner} $${value}`} );
+            newEmbed.addFields( {name: '\u200B', value: `@${loser} owes @${winner} $${value}`} );
             // Add to dictionary here instead
         }
         // TODO: Loop through KEYS of the dictionary, create an Embed for each user that owes 
