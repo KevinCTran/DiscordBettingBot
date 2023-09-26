@@ -59,8 +59,6 @@ module.exports = {
 					components: [row],
 				});
 			}
-
-			
 		} catch (error) {
 			console.error('Error:', error);
 		} 

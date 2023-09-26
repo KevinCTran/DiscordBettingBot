@@ -6,7 +6,7 @@ module.exports = {
 	name: Events.MessageReactionRemove,
 	async execute(interaction, user) {
 		if (user.id === process.env.BOT_ID) return; // Skip if the bot is the one reacting to messages
-		async function updateDocuments(model, criteria, pullList, pullVal) {
+		async function updateDocuments(model, criteria, pullList, pullVal, emoji) {
 			try {
 				console.log(`Pulling user '${pullVal}' from ${pullList}.`)
 				const result = await model.findOneAndUpdate(criteria, 
@@ -18,7 +18,13 @@ module.exports = {
 					return result
 				}
 				else {
-					console.log("Didn't find document. Could not remove.");
+					// Remove reaction if bet is inactive
+					console.log("Didn't find active bet. Could not remove - removing reaction");
+					try {	
+						await message.reactions.resolve(emoji)?.users.remove(user.id);
+					} catch (error) {
+						console.error(`Error removing ${user}'s reaction to inactive bet`, error);
+					}
 				}
 			} catch (error) {
 				console.error('Error finding and replacing document:', error);
@@ -41,37 +47,24 @@ module.exports = {
 			if (channel === process.env.OU_CHANNEL) {
 				// Add the user into the array of betters
 				criteria = { betString:`${val1} ${val3} ${val2}`, active: true }
-				console.log(`criteria: ${criteria}`);
+				console.log(`criteria: ${criteria.betString}`);
 				if (interaction.emoji.name == '⬆️') {
-					await updateDocuments(Overunder, criteria, 'overBetters', user.username)
+					await updateDocuments(Overunder, criteria, 'overBetters', user.username, interaction.emoji.name);
 				} 
 				else if (interaction.emoji.name == '⬇️') {
-					await updateDocuments(Overunder, criteria, 'underBetters', user.username)
+					await updateDocuments(Overunder, criteria, 'underBetters', user.username, interaction.emoji.name);
 				}
 			} 
 			else if (channel === process.env.VS_CHANNEL) {
 				criteria = criteria = { betString:`${val1} vs ${val2} ${val3}`, active: true }
-				console.log(`criteria: ${criteria}`);
+				console.log(`criteria: ${criteria.betString}`);
 				if (interaction.emoji.name == '1️⃣') {
-					await updateDocuments(Vs, criteria, 'oneBetters', user.username)
+					await updateDocuments(Vs, criteria, 'oneBetters', user.username, interaction.emoji.name);
 				} 
 				else if (interaction.emoji.name == '2️⃣') {
-					await updateDocuments(Vs, criteria, 'twoBetters', user.username)
+					await updateDocuments(Vs, criteria, 'twoBetters', user.username, interaction.emoji.name);
 				}
 			} 
-		}
-		else {
-			// Remove reaction to the message if it's inactive, make it unbettable 
-			try {
-				if (channel === process.env.OU_CHANNEL) {
-					await message.reactions.resolve('⬇️')?.users.remove(user.id);
-				} 
-				else if (channel === process.env.VS_CHANNEL) {
-					await message.reactions.resolve('2️⃣')?.users.remove(user.id);
-				}
-			} catch (error) {
-				console.error(`Error removing ${user}'s reaction to inactive bet`, error);
-			}
 		}
 	}
 };
