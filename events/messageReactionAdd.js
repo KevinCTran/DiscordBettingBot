@@ -42,6 +42,7 @@ module.exports = {
 			if (channel === process.env.OU_CHANNEL) {
 				// Add the user into the array of betters
 				criteria = { betString:`${val1} ${val3} ${val2}`, active: true }
+				console.log(`criteria: ${criteria}`);
 				if (interaction.emoji.name == '⬆️') {
 					await updateDocuments(Overunder, criteria, 'overBetters', user.username)
 				} 
@@ -51,6 +52,7 @@ module.exports = {
 			} 
 			else if (channel === process.env.VS_CHANNEL) {
 				criteria = criteria = { betString:`${val1} vs ${val2} ${val3}`, active: true }
+				console.log(`criteria: ${criteria}`);
 				if (interaction.emoji.name == '1️⃣') {
 					await updateDocuments(Vs, criteria, 'oneBetters', user.username)
 				} 

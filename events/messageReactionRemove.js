@@ -40,7 +40,8 @@ module.exports = {
 			// Bet strings for OU and VS 
 			if (channel === process.env.OU_CHANNEL) {
 				// Add the user into the array of betters
-				criteria = { betString:`${val1} ${val2} ${val3}`, active: true }
+				criteria = { betString:`${val1} ${val3} ${val2}`, active: true }
+				console.log(`criteria: ${criteria}`);
 				if (interaction.emoji.name == '⬆️') {
 					await updateDocuments(Overunder, criteria, 'overBetters', user.username)
 				} 
@@ -50,24 +51,26 @@ module.exports = {
 			} 
 			else if (channel === process.env.VS_CHANNEL) {
 				criteria = criteria = { betString:`${val1} vs ${val2} ${val3}`, active: true }
+				console.log(`criteria: ${criteria}`);
 				if (interaction.emoji.name == '1️⃣') {
 					await updateDocuments(Vs, criteria, 'oneBetters', user.username)
 				} 
 				else if (interaction.emoji.name == '2️⃣') {
 					await updateDocuments(Vs, criteria, 'twoBetters', user.username)
 				}
-			} else {
-				// Remove reaction to the message if it's inactive, make it unbettable 
-				try {
-					if (channel === process.env.OU_CHANNEL) {
-						await message.reactions.resolve('⬇️')?.users.remove(user.id);
-					} 
-					else if (channel === process.env.VS_CHANNEL) {
-						await message.reactions.resolve('2️⃣')?.users.remove(user.id);
-					}
-				} catch (error) {
-					console.error(`Error removing ${user}'s reaction to inactive bet`, error);
+			} 
+		}
+		else {
+			// Remove reaction to the message if it's inactive, make it unbettable 
+			try {
+				if (channel === process.env.OU_CHANNEL) {
+					await message.reactions.resolve('⬇️')?.users.remove(user.id);
+				} 
+				else if (channel === process.env.VS_CHANNEL) {
+					await message.reactions.resolve('2️⃣')?.users.remove(user.id);
 				}
+			} catch (error) {
+				console.error(`Error removing ${user}'s reaction to inactive bet`, error);
 			}
 		}
 	}
