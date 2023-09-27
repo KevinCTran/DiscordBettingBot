@@ -9,7 +9,6 @@ module.exports = {
 		async function updateDocuments(model, criteria, pushList, pushVal) {
 			try {
 				console.log(`Pushing user '${pushVal}' into ${pushList}.`)
-				console.log(criteria)
 				const result = await model.findOneAndUpdate(criteria, 
 					{ $addToSet: { [pushList]: pushVal } }, 
 					{ new: true });
