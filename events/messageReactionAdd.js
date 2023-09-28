@@ -6,7 +6,7 @@ module.exports = {
 	name: Events.MessageReactionAdd,
 	async execute(interaction, user) {
 		if (user.id === process.env.BOT_ID) return; // Skip if the bot is the one reacting to messages
-		async function updateDocuments(model, criteria, pushList, pushVal) {
+		async function updateDocuments(model, criteria, pushList, pushVal, emoji) {
 			try {
 				console.log(`Pushing user '${pushVal}' into ${pushList}.`)
 				const result = await model.findOneAndUpdate(criteria, 
